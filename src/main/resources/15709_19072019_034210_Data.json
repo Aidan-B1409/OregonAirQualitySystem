@@ -1,0 +1,51 @@
+{
+    "mapVersion": "0.75",
+    "baseVersion": "6",
+    "mapVersionString": "",
+    "results": [
+      {
+        "ID": 15709,
+        "Label": "NWX PurpleAir",
+        "DEVICE_LOCATIONTYPE": "outside",
+        "THINGSPEAK_PRIMARY_ID": "579031",
+        "THINGSPEAK_PRIMARY_ID_READ_KEY": "N1JCRJ4WKEZAFYMP",
+        "THINGSPEAK_SECONDARY_ID": "579032",
+        "THINGSPEAK_SECONDARY_ID_READ_KEY": "3XDG7773CR58KP4E",
+        "Lat": 44.057819,
+        "Lon": -121.351391,
+        "PM2_5Value": "2.57",
+        "LastSeen": 1563574125,
+        "Type": "PMS5003+PMS5003+BME280",
+        "Hidden": "false",
+        "DEVICE_BRIGHTNESS": "15",
+        "DEVICE_HARDWAREDISCOVERED": "2.0+BME280+PMSX003-B+PMSX003-A",
+        "Version": "4.02",
+        "LastUpdateCheck": 1563571605,
+        "Uptime": "272755",
+        "RSSI": "-51",
+        "isOwner": 0,
+        "temp_f": "81",
+        "humidity": "21",
+        "pressure": "887.6",
+        "AGE": 0,
+        "Stats": "{\"v\":2.57,\"v1\":2.86,\"v2\":2.88,\"v3\":3.02,\"v4\":2.71,\"v5\":2.08,\"v6\":3.59,\"pm\":2.57,\"lastModified\":1563574125795,\"timeSinceModified\":119965}"
+      },
+      {
+        "ID": 15710,
+        "ParentID": 15709,
+        "Label": "NWX PurpleAir B",
+        "THINGSPEAK_PRIMARY_ID": "579033",
+        "THINGSPEAK_PRIMARY_ID_READ_KEY": "EDOM27TX7A2KINO3",
+        "THINGSPEAK_SECONDARY_ID": "579034",
+        "THINGSPEAK_SECONDARY_ID_READ_KEY": "E1GD9HF4PNXH820N",
+        "Lat": 44.057819,
+        "Lon": -121.351391,
+        "PM2_5Value": "2.97",
+        "LastSeen": 1563574125,
+        "Hidden": "false",
+        "isOwner": 0,
+        "AGE": 0,
+        "Stats": "{\"v\":2.97,\"v1\":3.14,\"v2\":3.16,\"v3\":3.28,\"v4\":2.89,\"v5\":2.24,\"v6\":3.71,\"pm\":2.97,\"lastModified\":1563574125795,\"timeSinceModified\":119964}"
+      }
+    ]
+  }
