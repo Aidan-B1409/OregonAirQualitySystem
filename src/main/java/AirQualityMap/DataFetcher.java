@@ -1,5 +1,6 @@
 package AirQualityMap;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -14,7 +15,8 @@ import java.net.URL;
 public class DataFetcher {
     private String id, sensorURL;
     private String baseURL = "https://www.purpleair.com/json?show=";
-    URL url;
+    private URL url;
+    private SensorData data;
 
     public DataFetcher(String id){
         this.id = id;
@@ -30,8 +32,6 @@ public class DataFetcher {
         try {
             HttpURLConnection request = (HttpURLConnection)url.openConnection();
             int responseCode = request.getResponseCode();
-            System.out.println(responseCode);
-
             if(responseCode != 200){
                 throw new RuntimeException("HttpResponseCode:" +responseCode);
             }
@@ -45,10 +45,12 @@ public class DataFetcher {
         }
     }
 
+
     public JsonObject processInputStream(){
         JsonParser parser = new JsonParser();
         try {
             JsonElement root = parser.parse(new InputStreamReader((InputStream)connectToSensor().getContent()));
+            System.out.println(root.toString());
             return root.getAsJsonObject();
         }
         catch(IOException e) {
@@ -56,14 +58,13 @@ public class DataFetcher {
         }
     }
 
-    /*public String[] getData(){
-        String lat = processInputStream().get("results").getAsJsonArray().get(1).getAsJsonObject().get("Lat").getAsString();
-        //System.out.println(processInputStream().getAsString());
-        String lon = processInputStream().get("Lon").getAsString();
-        String name = processInputStream().get("Label").getAsString();
-        String value = processInputStream().get("PM2_5Value").getAsString();
+    public String[] getData(){
+        String lat = processInputStream().get("results").getAsJsonArray().get(0).getAsJsonObject().get("Lat").getAsString();
+        String lon = processInputStream().get("results").getAsJsonArray().get(0).getAsJsonObject().get("Lon").getAsString();
+        String name = processInputStream().get("results").getAsJsonArray().get(0).getAsJsonObject().get("Label").getAsString();
+        String value = processInputStream().get("results").getAsJsonArray().get(0).getAsJsonObject().get("PM2_5Value").getAsString();
 
-        String[] output = new String[]{lon, name, value};
+        String[] output = new String[]{lat, lon, name, value};
         return output;
-    }*/
+    }
 }
