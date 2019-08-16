@@ -10,12 +10,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class DataFetcher {
-    private String id, sensorURL;
+    private double id;
+    private String sensorURL;
     private String baseURL = "https://www.purpleair.com/json?show=";
     private URL url;
     private SensorData data;
 
-    public DataFetcher(String id){
+    public DataFetcher(double id){
         this.id = id;
         this.sensorURL = baseURL + id;
         try {
