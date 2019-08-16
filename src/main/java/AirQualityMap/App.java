@@ -1,11 +1,8 @@
 package AirQualityMap;
 
 public class App {
-    public String getGreeting() {
-        return "Hello world.";
-    }
-
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        DataFetcher dataFetcher = new DataFetcher("1570");
+        //System.out.println(dataFetcher.getData());
     }
 }
