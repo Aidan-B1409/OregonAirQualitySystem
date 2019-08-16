@@ -1,9 +1,6 @@
 package AirQualityMap;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,25 +43,40 @@ public class DataFetcher {
     }
 
 
-    public JsonObject processInputStream(){
+    public JsonElement processInputStream(){
         JsonParser parser = new JsonParser();
         try {
             JsonElement root = parser.parse(new InputStreamReader((InputStream)connectToSensor().getContent()));
-            System.out.println(root.toString());
-            return root.getAsJsonObject();
+            data = ParseResults(root);
+            return root;
         }
         catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    public String[] getData(){
-        String lat = processInputStream().get("results").getAsJsonArray().get(0).getAsJsonObject().get("Lat").getAsString();
-        String lon = processInputStream().get("results").getAsJsonArray().get(0).getAsJsonObject().get("Lon").getAsString();
-        String name = processInputStream().get("results").getAsJsonArray().get(0).getAsJsonObject().get("Label").getAsString();
-        String value = processInputStream().get("results").getAsJsonArray().get(0).getAsJsonObject().get("PM2_5Value").getAsString();
+    private SensorData ParseResults(JsonElement json){
+        double lat, lon, PM2_5Value,ID;
+        String label;
+        JsonObject primaryResults = json.getAsJsonObject().get("results").getAsJsonArray().get(0).getAsJsonObject();
+        SensorData data;
 
-        String[] output = new String[]{lat, lon, name, value};
-        return output;
+        lat = primaryResults.get("Lat").getAsDouble();
+        lon = primaryResults.get("Lon").getAsDouble();
+        label = primaryResults.get("Label").getAsString();
+        PM2_5Value = primaryResults.get("PM2_5Value").getAsDouble();
+        ID = primaryResults.get("ID").getAsDouble();
+
+        data = new SensorData.Builder(ID)
+                .ofName(label)
+                .atGeo(lat, lon)
+                .withValue(PM2_5Value)
+                .build();
+        return data;
+    }
+
+    public SensorData getData(){
+        processInputStream();
+        return data;
     }
 }
