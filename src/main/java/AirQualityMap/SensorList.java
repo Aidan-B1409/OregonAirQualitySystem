@@ -1,8 +1,8 @@
 package AirQualityMap;
 
 public enum SensorList {
-    NWX_PurpleAir(15709.0);
-    /*NW_Crossing(14791),
+    NWX_PurpleAir(15709.0),
+    NW_Crossing(14791),
     West_Bend_Village(14473),
     Tethero(15979),
     Woodriver_Village(18853),
@@ -15,7 +15,7 @@ public enum SensorList {
     Deschutes_River_Ranch(15875),
     Redmond_Home(3192),
     Nutcracker_Drive(3541),
-    Panoramic(23307);*/
+    Panoramic(23307);
 
     public final double IDRequest;
     SensorList(double value){

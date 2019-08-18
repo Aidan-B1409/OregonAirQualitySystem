@@ -12,7 +12,7 @@ public class App {
 
         for(SensorList sensor : sensorList){
             DataFetcher dataFetcher = new DataFetcher(sensor.IDRequest);
-            //System.out.println("\n\n" + dataFetcher.getData().toString());
+            System.out.println("\n\n" + dataFetcher.getData().toString());
             DataArray.add(dataFetcher.getData());
         }
 
