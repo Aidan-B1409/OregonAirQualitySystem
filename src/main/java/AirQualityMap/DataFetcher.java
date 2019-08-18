@@ -77,7 +77,9 @@ public class DataFetcher {
     }
 
     public SensorData getData(){
-        processInputStream();
+        if(data == null) {
+            processInputStream();
+        }
         return data;
     }
 }
