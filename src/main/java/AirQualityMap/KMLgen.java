@@ -20,6 +20,7 @@ public class KMLgen {
     }
 
     public void makeKML() throws FileNotFoundException{
+        makeStyleIcons();
         for(SensorData sensor : sensorDataList){
             makeDataPoint(sensor);
         }
@@ -27,19 +28,23 @@ public class KMLgen {
     }
 
     private void makeDataPoint(SensorData sensorData){
-        Icon icon = new Icon();
-        Style style = doc.createAndAddStyle();
-
-        style.withId("style_"+sensorData.getName())
-                .createAndSetIconStyle().withScale(5.0).withIcon(icon);
-        style.createAndSetLabelStyle().withColor("ff43b3ff").withScale(5.0);
 
         Placemark placemark = folder.createAndAddPlacemark();
         placemark.withName(sensorData.getName())
-                .withStyleUrl("#style_" + sensorData.getName())
-                .withDescription("<![CDATA[<img src=\"http://chart.apis.google.com/chart?chs=430x200&chd=t:" + sensorData.getLat() + "," + sensorData.getLon() + "&cht=p3&chl=" + sensorData.getName() + sensorData.getPM2_5()+ "/>")
-                .createAndSetLookAt().withLongitude(sensorData.getLon()).withLatitude(sensorData.getLat()).withAltitude(0).withRange(120000);
-        placemark.createAndSetPoint().addToCoordinates(sensorData.getLat(), sensorData.getLon());
+                .withStyleUrl("#good")
+                .withDescription("value = " + sensorData.getPM2_5())
+                .createAndSetLookAt().withLongitude(sensorData.getLon()).withLatitude(sensorData.getLat()).withAltitude(0).withRange(1200);
+        placemark.createAndSetPoint().addToCoordinates(sensorData.getLat(), sensorData.getLon()).setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
+
+    }
+
+    private void makeStyleIcons(){
+        Icon goodIcon = new Icon().withHref("http://files.airnowtech.org/airnow/today/aqi0circle.png");
+        BalloonStyle goodBalloon = new BalloonStyle().withBgColor("ffffffff");
+        Style goodStyle = doc.createAndAddStyle();
+        goodStyle.withId("good").createAndSetIconStyle().withScale(1.0).withIcon(goodIcon);
+        goodStyle.createAndSetLabelStyle().withColor("ff43b3ff").withScale(1.2);
+        goodStyle.createAndSetBalloonStyle().withBgColor("ffffffff").withDisplayMode(DisplayMode.DEFAULT);
 
     }
 }
