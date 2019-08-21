@@ -21,7 +21,7 @@ public class App {
             kmlGen.makeKML();
         }
         catch(FileNotFoundException e){
-
+            throw new RuntimeException("File Not Found");
         }
     }
 }

@@ -34,7 +34,7 @@ public class KMLgen {
                 .withStyleUrl("#good")
                 .withDescription("value = " + sensorData.getPM2_5())
                 .createAndSetLookAt().withLongitude(sensorData.getLon()).withLatitude(sensorData.getLat()).withAltitude(0).withRange(1200);
-        placemark.createAndSetPoint().addToCoordinates(sensorData.getLat(), sensorData.getLon()).setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
+        placemark.createAndSetPoint().addToCoordinates(sensorData.getLon(), sensorData.getLat()).setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
 
     }
 
