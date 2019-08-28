@@ -11,8 +11,8 @@ public class App {
         EnumSet<SensorList> sensorList = EnumSet.allOf(SensorList.class);
 
         for(SensorList sensor : sensorList){
-            DataFetcher dataFetcher = new DataFetcher(sensor.IDRequest);
-            System.out.println("\n\n" + dataFetcher.getData().toString());
+            PurpleAirDataFetcher dataFetcher = new PurpleAirDataFetcher(sensor.IDRequest);
+            //System.out.println("\n\n" + dataFetcher.getData().toString());
             DataArray.add(dataFetcher.getData());
         }
 

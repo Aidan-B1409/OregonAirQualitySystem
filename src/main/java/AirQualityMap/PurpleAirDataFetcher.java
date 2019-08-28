@@ -9,14 +9,14 @@ import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class DataFetcher {
+public class PurpleAirDataFetcher {
     private double id;
     private String sensorURL;
     private String baseURL = "https://www.purpleair.com/json?show=";
     private URL url;
     private SensorData data;
 
-    public DataFetcher(double id){
+    public PurpleAirDataFetcher(double id){
         this.id = id;
         this.sensorURL = baseURL + id;
         try {

@@ -10,20 +10,22 @@ import java.util.EnumSet;
 public class KMLgen {
     private enum AqiLevels{
 
-        Good("http://files.airnowtech.org/airnow/today/aqi0circle.png", 1, 50),
-        Moderate("http://files.airnowtech.org/airnow/today/aqi1circle.png", 51 , 100),
-        Sensitive("http://files.airnowtech.org/airnow/today/aqi2circle.png", 101, 150),
-        Unhealthy("http://files.airnowtech.org/airnow/today/aqi3circle.png", 151, 200),
-        Very_Unhealthy("http://files.airnowtech.org/airnow/today/aqi4circle.png", 201, 300),
-        Hazardous("http://files.airnowtech.org/airnow/today/aqi5circle.png", 301, 500),
-        Unknown("http://files.airnowtech.org/airnow/today/undefined_circle.png", -1, 0);
+        Good("http://files.airnowtech.org/airnow/today/aqi0circle.png", 1, 50, 0.01, 12.0),
+        Moderate("http://files.airnowtech.org/airnow/today/aqi1circle.png", 51 , 100, 12.1, 35.4),
+        Sensitive("http://files.airnowtech.org/airnow/today/aqi2circle.png", 101, 150, 35.5, 55.4),
+        Unhealthy("http://files.airnowtech.org/airnow/today/aqi3circle.png", 151, 200, 55.5, 150.4),
+        Very_Unhealthy("http://files.airnowtech.org/airnow/today/aqi4circle.png", 201, 300, 150.5, 250.4),
+        Hazardous("http://files.airnowtech.org/airnow/today/aqi5circle.png", 301, 500, 250.5, 500.4),
+        Unknown("http://files.airnowtech.org/airnow/today/undefined_circle.png", -1, 0, -1, 0.0);
 
         public final String href;
-        public final double minRange, maxRange;
-        AqiLevels(String href, double minRange, double maxRange){
+        public final double aqiMin, aqiMax, concMin, concMax;
+        AqiLevels(String href, double aqiMin, double aqiMax, double concMin, double concMax){
             this.href = href;
-            this.minRange = minRange;
-            this.maxRange = maxRange;
+            this.aqiMin = aqiMin;
+            this.aqiMax = aqiMax;
+            this.concMin = concMin;
+            this.concMax = concMax;
         }
     }
     private ArrayList<SensorData> sensorDataList;
@@ -48,11 +50,14 @@ public class KMLgen {
     }
 
     private void makeDataPoint(SensorData sensorData){
-        String styleUrl = checkAqiRange(sensorData.getPM2_5()).toString();
+        AqiLevels qualityLevel = checkAqiRange(sensorData.getPM2_5());
+        String styleUrl = qualityLevel.toString();
+        double qualityValue = Math.round(toAqi(sensorData.getPM2_5(), qualityLevel));
+
         Placemark placemark = folder.createAndAddPlacemark();
         placemark.withName(sensorData.getName())
                 .withStyleUrl("#"+styleUrl)
-                .withDescription("value = " + sensorData.getPM2_5())
+                .withDescription("AQI Value = " + qualityValue +"\n" + "PM2.5 Value = " + sensorData.getPM2_5())
                 .createAndSetLookAt().withLongitude(sensorData.getLon()).withLatitude(sensorData.getLat()).withAltitude(0).withRange(1200);
         placemark.createAndSetPoint().addToCoordinates(sensorData.getLon(), sensorData.getLat()).setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
     }
@@ -71,10 +76,15 @@ public class KMLgen {
     private AqiLevels checkAqiRange(double value){
         EnumSet<AqiLevels> levelList = EnumSet.range(AqiLevels.Good, AqiLevels.Hazardous);
         for(AqiLevels level : levelList){
-            if((value >= level.minRange) && (value <= level.maxRange)){
+            if((value >= level.concMin) && (value <= level.concMax)){
                 return level;
             }
         }
         return AqiLevels.Unknown;
+    }
+
+    private double toAqi(double PM2_5, AqiLevels level){
+        double value = (((level.aqiMax - level.aqiMin) / (level.concMax - level.concMin)) * (PM2_5 - level.concMin) + level.aqiMin);
+        return value;
     }
 }
